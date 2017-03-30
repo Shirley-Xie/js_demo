@@ -1,4 +1,5 @@
-js语法：
+js
+基本语法：
 1. 语句 /*声明,赋值*/
         var a = 1 + 3; /*var声明变量a,1 + 3叫做表达式且无;, ;语句结束*/
 2. 变量 var a; a = 1 + 3;/*上句等价*/ 
@@ -27,7 +28,7 @@ js语法：
         {var a = 1;} a // 1
         区块往往用来构成其他更复杂的语法结构，比如for、if、while、function等。
 
-6. 条件语句 if switch
+6. 条件语句 if(true) switch(===)
          1. var m = 1; var n = 2;
 			if (m !== 1)
 			if (n === 2) console.log('hello');
@@ -66,6 +67,65 @@ js语法：
 			} else {
 			  even = false;
 			}
-7.循环语句
+7. 循环语句 
+          1. while (true) {statement;}//{}一条语句可省略
+          2. do  statement while (expression);//循环至少运行一次，这是这种结构最大的特点,while语句后面的分号不能省略。
+          3. for (initialize; test; increment)  statement //{}一条语句可省略
 
+            var x = 3;
+			for (var i = 0; i < x; i++) { //for ( ; ; )全省略都可以
+			  console.log(i);
+			}
+			等价于：
 
+			var x = 3;
+			var i = 0;
+
+			while (i < x) {
+			  console.log(i);
+			  i++;
+			}
+		  4.break 用于跳出代码块或循环, continue 用于立即终止本轮循环，返回循环结构的头部，开始下一轮循环
+		    for (var i = 0; i < 5; i++) {
+			    console.log(i);
+			    if (i === 3)
+			        break;
+			}//  0 1 2 3
+			var i = 0;
+			while (i < 100){
+			  i++;
+			  if (i%2 === 0) continue;
+			  console.log('输出奇数为：' + i);
+			}
+
+			5.label: statement 标签相当于定位符，用于跳转到程序的任意位置 
+			  标签通常与break语句和continue语句配合使用，跳出特定的循环。
+				top:
+				  for (var i = 0; i < 3; i++){
+				    for (var j = 0; j < 3; j++){
+				      if (i === 1 && j === 1) break top;
+				      console.log('i=' + i + ', j=' + j);
+				    }
+				  }// i=0, j=0 // i=0, j=1 // i=0, j=2 // i=1, j=0 若不用则只能跳出里面的循环
+
+数据类型：原始类型  //es6 Symbol 
+		number, 
+		string,
+		boolean, 
+		合成类型：
+		object：各种值组成的集合 
+		    狭义的对象（object）
+			数组（array）
+			函数（function）
+		特殊值：
+		undefined：表示“未定义”或不存在，即此处目前没有任何值
+		null:表示空缺，即此处应该有一个值，但目前为空 // typeof null = "object"
+
+		1.  typeof 运算符 typeof '123' // "string" 
+			typeof可以用来检查一个没有声明的变量，而不报错。
+			if (typeof v === "undefined") {
+			  // ...
+			}
+		2. 因为 typeof {}/[] 为 object 所以用instanceof运算符区分 [] instanceof Array //true
+            在if 语句 undefined == null == false
+			Object.prototype.toString方法
