@@ -121,11 +121,38 @@ js
 		undefined：表示“未定义”或不存在，即此处目前没有任何值
 		null:表示空缺，即此处应该有一个值，但目前为空 // typeof null = "object"
 
-		1.  typeof 运算符 typeof '123' // "string" 
+		1.  *typeof 运算符 typeof '123' // "string" 
 			typeof可以用来检查一个没有声明的变量，而不报错。
 			if (typeof v === "undefined") {
 			  // ...
 			}
-		2. 因为 typeof {}/[] 为 object 所以用instanceof运算符区分 [] instanceof Array //true
-            在if 语句 undefined == null == false
+
+		2. 因为 typeof {}/[] 为 object 所以用instanceof运算符区分 [] *instanceof Array //true
+            在if 语句 undefined == null == false //Undefined和Null只是普通的变量名。
+            Number(null) // 0 
+            Number(undefined) // NaN
 			Object.prototype.toString方法
+
+        3. 布尔值
+        两元逻辑运算符： && (And)，|| (Or)
+        前置逻辑运算符： ! (Not)
+        相等运算符：===，!==，==，!=
+        比较运算符：>，>=，<，<=
+        转换规则是除了  undefined null false 0 NaN ""或''（空字符串）六个值被转为false 
+                        空数组（[]）和空对象（{}）对应的布尔值，都是true。
+
+数值：
+        1. 整数和浮点数
+        JavaScript内部，所有数字都是以64位浮点数形式储存，即使整数也是如此。1 === 1.0 // true
+        容易造成混淆的是，某些运算只有整数才能完成，此时JavaScript会自动把64位浮点数，转成32位整数
+        由于浮点数不是精确的值，所以涉及小数的比较和运算要特别小心
+        0.1 + 0.2 === 0.3// false  
+        0.3 / 0.1 // 2.9999999999999996
+        (0.3 - 0.2) === (0.2 - 0.1) // false
+
+        2. 数值精度
+        第1位：符号位，0表示正数，1表示负数
+        第2位到第12位：储存指数部分 11位 2047 = Math.pow(2, 11)-1  分出一半表示负数，21024到2-1023（开区间），超出这个范围的数无法表示
+        第13位到第64位：储存小数部分（即有效数字）53
+        IEEE 754规定，有效数字第一位默认总是1，不保存在64位浮点数之中，有效数字总是1.xx...xx的形式，其中xx..xx的部分保存在64位浮点数之中，最长可能为52位。
+        精度最多只能到53个二进制位，这意味着，绝对值小于 pow = Math.pow(2, 53)，即-(pow-1)到pow-1 大于的不保存
