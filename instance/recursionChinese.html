@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>查找新沂市</title>
+</head>
+<body>
+  <script type="text/javascript">
+		var data = [
+			{
+				name: '中国',
+				children: [
+					{
+					  name: '浙江省',
+					  children:[
+					    {
+					    	name:'杭州市',
+                children:[
+                	{
+                		name:'西湖区',
+                	},
+                	{                  	
+                		name:'滨江区',
+                	},
+                	{
+                		name:'余杭区',
+                	},
+                	{
+                		name:'江干区',
+                	},
+                ]
+					    }
+					  ]
+					},
+					{
+					   name: '江苏省',
+					   children: [
+					       {
+										name: '南京市',
+										children: [
+										   {
+										       name: '栖霞区',
+										       children: [
+										           {
+										               name: '仙林'
+										           }
+										       ]
+										   },
+										   {
+										       name: '高淳县',
+										       children: [
+										           {
+										               name: '固城镇'
+										           },
+										           {
+										               name: '淳溪街道'
+										           }
+										       ]
+										   },
+										   {
+										       name: '鼓楼区',
+										       children: [
+										           {
+										              name: '中央门街道'
+										           },
+										           {
+										              name: '挹江门街道'
+										           },
+										           {
+										              name: '湖南路街道'
+										           }
+										       ]
+										   },
+										]
+					       },
+					       {
+					       	  name:'徐州市',
+					       	  children:[
+					       	    {
+					       	  		name:'新沂市',
+					       	    },
+					       	    {
+					       	    	name:'邳州市',
+					       	    }
+					       	  ]
+					       }
+					   ]
+					},
+					{
+					   name: '安徽省',
+					   children:null
+					}
+				]
+			}
+		];
+    getArray(data,'新沂市');
+    console.log('over');
+
+    function getArray(data,name)
+    {
+      for (var i in data) {
+          if (data[i].name == name) {
+              console.log(data[i]);
+              break;
+          } else {
+          	  console.log(i,'datai',data[i].children);
+              getArray(data[i].children, name);
+          }
+      }
+    }
+        /*树从上层到下层，从左到右*/
+  </script>
+</body>
+</html>
