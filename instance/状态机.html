@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>连续数分组</title>
+</head>
+<body>
+  <script type="text/javascript">
+
+ //不用递归实现[399, "451-454", "456-458", 460, "469-470", "473-474"]
+  var arr = [399,451,452,453,454,456,457,458,460,469,470,473,474];
+
+  function combineParis(arr)
+  {
+  	// 常量定义
+  	var STATE_BEGIN = 1;
+  	var STATE_CONTINUE = 2;
+
+  	// 初始化状态
+  	var state = STATE_BEGIN;
+  	var lastValue = null;
+  	var currentPair = null;
+    var n =[];
+
+  	// 遍历各数据
+  	for(var i = 0; i < arr.length; i++)
+  	{
+  		// 取出值
+  		var value = arr[i];
+
+  		// 判断当前状态
+  		var currentState = null;
+  		if(lastValue === null)
+  		{
+  			currentState = STATE_BEGIN;
+  		}
+  		else
+  		{
+  			if(value - lastValue == 1)
+  			{
+  				currentState = STATE_CONTINUE;
+  			}
+  			else
+  			{
+  				currentState = STATE_BEGIN;
+  			}
+  		}
+
+  		lastValue = value;
+
+  		// 判断状态迁移产生的影响
+  		switch(state)
+  		{
+  			case STATE_BEGIN:
+   				switch(currentState)
+  				{
+  					case STATE_BEGIN:
+  						if(currentPair)
+  						{
+  							if(currentPair.begin == currentPair.end)
+  							{
+  								console.log(currentPair.begin);
+                  n.push(currentPair.begin);
+  							}
+  							else
+  							{
+  								console.log(currentPair.begin + "-" + currentPair.end);
+                  n.push(currentPair.begin + "-" + currentPair.end);
+  							}
+  							
+  						}
+
+  						currentPair = {begin: value, end: value};
+  						break;
+  					case STATE_CONTINUE:
+  						currentPair.end = value;
+  						break;
+  				}
+  				break;
+  			case STATE_CONTINUE:
+  				switch(currentState)
+  				{
+  					case STATE_BEGIN:
+							if(currentPair.begin == currentPair.end)
+							{
+								console.log(currentPair.begin);
+                n.push(currentPair.begin);
+							}
+							else
+							{
+								console.log(currentPair.begin + "-" + currentPair.end);
+                n.push(currentPair.begin + "-" + currentPair.end);
+							}
+
+  						currentPair = {begin: value, end: value};
+  						break;
+  					case STATE_CONTINUE:
+  						currentPair.end = value;
+  						break;
+  				}
+  				break;
+  		}
+
+  		state = currentState;
+  	}
+
+  	if(currentPair.end == arr[arr.length - 1])
+  	{
+			if(currentPair.begin == currentPair.end)
+			{
+				console.log(currentPair.begin);
+			}
+			else
+			{
+				console.log(currentPair.begin + "-" + currentPair.end);
+			}					
+  	}
+  }
+
+  combineParis(arr);
+
+</script>
+</body>
+</html>

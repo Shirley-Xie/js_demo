@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tesdt</title>
+</head>
+<body>
+<script type="text/javascript">
+ function findDensity(table,currentTemperature){
+ 	 table = JSON.parse(table);
+   var records = null;
+
+   for (var i = 0; i < table.length; i++) {
+      var couple = table[i];
+
+      if(currentTemperature == couple.temperature){
+        return  couple.density;
+      }
+
+      if(currentTemperature < couple.temperature){
+          var D_density = couple.density - records.density ; 
+          var D_temperature = couple.temperature - records.temperature;
+          var slope = D_density/D_temperature;
+          var b = couple.density - slope*(couple.temperature);
+          var p = slope*currentTemperature + b;
+          return p;
+      }
+      records = couple;
+    }
+
+    if(currentTemperature > 40 || currentTemperature < 0)
+    {
+      throw new Error("表中无法查找到" + currentTemperature + "记录！");
+    }
+    
+ }
+
+var table = '[{"temperature":0,  "density":0.9725},{  "temperature":10,  "density":0.97},{  "temperature":20,  "density":0.9666},{  "temperature":25,  "density":0.9627},{  "temperature":30,  "density":0.9587},{  "temperature":35,  "density":0.9548},{  "temperature":40,  "density":0.9508}]';
+
+var liquidTemp = 31.23460429161355;
+
+console.log(findDensity(table, liquidTemp));
+</script>
+</body>
+</html>
