@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var STATE_IN = "进";
+    var STATE_OUT = "出";
+    var STATE_STABLE = "稳";
+
+    // 上次质量
+	var lastMass = 0;
+	var beginMass = 0;
+	//开始时间
+	var beginTime = 0;
+
+	// 记录最近的重量，用于判断斜率变化
+	var massRecords = [];
+
+	// 根据最近的n个样点来判断斜率的变化
+	var massRecordsTimeout = 8000 * 1000;
+	var massKLimit = 0.05;
+	var massUpDownDiff = 0;
+
+	//当前状态
+	var state = STATE_STABLE;
+	var current = 0;
+
+/*
+	function judgeState(massRecords)
+	{
+		var up = 0;
+		var down = 0;
+        for(var i = 0; i < massRecords.length - 1; i++)
+        {
+        	var record1 = massRecords[i];
+        	var record2 = massRecords[i + 1];
+        	var k = (record2.mass - record1.mass) / (record2.time - record1.time);
+
+        	// 如果k的绝对值大于斜率门限，则对结果计分
+        	if(Math.abs(k) > massKLimit)
+        	{
+	        	if(k > 0)
+	        	{
+	        		up++;
+	        	}
+	        	else if(k < 0)
+	        	{
+	        		down++;
+	        	}
+        	}
+        }
+
+        var diff = up - down;
+        if(Math.abs(diff) < massUpDownDiff)
+        {
+        	return STATE_STABLE;
+        }
+
+
+        if(diff > 0)
+        {
+        	return STATE_IN;
+        }
+
+        return STATE_OUT;
+	}
+
+	function judgeState(massRecords)
+	{
+		var ks = 0;
+		var kcount = 0;
+		var kmax = 0;
+		var kmin = 0;
+        for(var i = 0; i < massRecords.length - 1; i++)
+        {
+        	var record1 = massRecords[i];
+        	var record2 = massRecords[i + 1];
+        	var k = (record2.mass - record1.mass) / (record2.time - record1.time);
+
+        	if(k > kmax)
+        	{
+        		kmax = k;
+        		continue;
+        	}
+
+        	if(k < kmin)
+        	{
+        		kmin = k;
+        		continue;
+        	}
+
+        	ks += k;
+        	kcount++;
+        }
+
+
+        var kavg = 0;
+        if(kcount > 0)
+        {
+        	kavg = ks / kcount;
+        }
+
+        if(Math.abs(kavg) < massKLimit)
+        {
+        	return STATE_STABLE;
+        }
+       
+        if(kavg > 0)
+        {
+        	return STATE_IN;
+        }
+
+        return STATE_OUT;
+	}
+*/
+
+	function judgeState(massRecords)
+	{
+		let length = massRecords.length;
+		if(length < 2)
+		{
+			return STATE_STABLE;
+		}
+
+    	var record1 = massRecords[length - 2];
+    	var record2 = massRecords[length - 1];
+
+    	var diff = record2.mass - record1.mass;
+    	if(diff == 0)
+    	{
+    		return STATE_STABLE;
+    	}
+
+    	if(diff > 0)
+    	{
+    		return STATE_IN;
+    	}
+
+    	return STATE_OUT;
+	}
+
+	function fsm(current) {
+		var now = 0;
+		
+		// 将当前值加入质量记录中
+		massRecords.push(current);
+		var nextMassRecords = [];
+
+		for(var i = 0; i < massRecords.length; i++)
+		{
+			var massRecord = massRecords[i];
+			if(massRecord.time + massRecordsTimeout < now)
+			{
+				continue;
+			}
+
+			nextMassRecords.push(massRecord);
+		}
+
+		massRecords = nextMassRecords;
+
+		// 通过质量记录判断当前状态
+		nextState = judgeState(massRecords);
+          
+		if(state === nextState)
+		{
+			return;
+		}
+
+		var amount = current.mass - beginMass;
+	
+		console.log(state, amount, nextState)
+		state = nextState;
+		beginMass = current.mass;
+		beginTime = current.time;
+	}
+
+	fsm({mass: 10000, time:0});
+	fsm({mass: 20000, time:60 * 1000});
+	fsm({mass: 25000, time:120 * 1000});
+	fsm({mass: 30000, time:180 * 1000});
+
+	fsm({mass: 30000, time:240 * 1000});
+	fsm({mass: 60000, time:300 * 1000});
+	fsm({mass: 80000, time:360 * 1000});
+	fsm({mass: 100000, time:420 * 1000});
+
+</script>
+</body>
+</html>
