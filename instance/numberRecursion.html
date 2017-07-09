@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>连续数分组</title>
+</head>
+<body>
+  <script type="text/javascript">
+//递归实现[399, "451-454", "456-458", 460, "469-470", "473-474"]
+ var arr = [399,451,452,453,454,456,457,458,460,469,470,473,474];
+  //建立数组放分组后的数
+  resultArr=[];
+
+  function currentNum(dataValue)
+  {
+    var unit = [];
+    if (dataValue.length == 0){
+      return;
+    }
+    var tmp = dataValue[0];
+   
+    for(var i = 1; i < dataValue.length; i++)
+    {
+      var data = dataValue[i];
+      //判断
+      if (tmp + 1 == data){
+        tmp = data;
+      }else{
+        break;
+      }
+    }
+    //实现取值后加连接符
+    if(i == 1){
+      //slice()在已有的数组中返回给定的数字
+     resultArr.push(dataValue[0]);
+    }else{
+      unit.push(dataValue[0],dataValue[i-1]); 
+      resultArr.push(unit.join("-"));
+    }
+     //调用push后的数组
+    currentNum(dataValue.slice(i));
+    
+  }
+
+  currentNum(arr);
+  document.write(currentNum(arr))
+
+/*并没有完成
+ //找规律的[399, "451-454", "456-458", 460, "469-470", "473-474"]
+ var arr = [399,451,452,453,454,456,457,458,460,469,470,473];
+  var previous = arr[0];
+  var group = [];
+  var one = [];
+  var begin,end;
+
+  for (var i = 1; i < arr.length; i++) {
+    var current = arr[i];
+      
+    //判断是否是连续数组
+    if(previous == current - 1) {
+
+      if(arr[i-1] != arr[i-2] + 1) {
+        begin = arr[i-1];
+      }
+
+      if(arr[i] + 1 != arr[i + 1]) {
+        end = arr[i];
+      }
+
+      previous = current;
+      continue;
+    }
+    
+    // 前后不连续
+    if(arr[i-1] != arr[i]-1 && arr[i] != arr[i+1]-1) {
+      group.push(previous);
+    } 
+    else {
+      // 判断是否为首个值
+      if(previous == arr[0]) {
+         group.push(current);
+      } else{
+         group.push(begin + "-" + end);
+      }
+
+    }
+          
+    previous = current;       
+  }
+  
+  group.push( begin + "-" + end );
+
+  console.log(group);
+  */
+ 
+</script>
+</body>
+</html>

@@ -8,14 +8,15 @@
  function findDensity(table,currentTemperature){
  	 table = JSON.parse(table);
    var records = null;
-
+   //records的存在意义是跑完第一条后上一条和此条同时存在可以进行操作
+   
    for (var i = 0; i < table.length; i++) {
       var couple = table[i];
-
+      //优先考虑特殊情况
       if(currentTemperature == couple.temperature){
         return  couple.density;
       }
-
+      //线性计算
       if(currentTemperature < couple.temperature){
           var D_density = couple.density - records.density ; 
           var D_temperature = couple.temperature - records.temperature;
@@ -37,8 +38,13 @@
 var table = '[{"temperature":0,  "density":0.9725},{  "temperature":10,  "density":0.97},{  "temperature":20,  "density":0.9666},{  "temperature":25,  "density":0.9627},{  "temperature":30,  "density":0.9587},{  "temperature":35,  "density":0.9548},{  "temperature":40,  "density":0.9508}]';
 
 var liquidTemp = 31.23460429161355;
+table = JSON.parse(table);
+table = JSON.stringify(table, null, 4)
+//展示
+document.write('液体密度表' + "<pre>" + table + "</pre>" )
+document.write('温度为' + liquidTemp )
+document.write('计算的密度为' + findDensity(table, liquidTemp))
 
-console.log(findDensity(table, liquidTemp));
 </script>
 </body>
 </html>

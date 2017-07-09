@@ -9,7 +9,7 @@
     var STATE_OUT = "出";
     var STATE_STABLE = "稳";
 
-    // 上次质量
+  // 上次质量
 	var lastMass = 0;
 	var beginMass = 0;
 	//开始时间
@@ -26,95 +26,6 @@
 	//当前状态
 	var state = STATE_STABLE;
 	var current = 0;
-
-/*
-	function judgeState(massRecords)
-	{
-		var up = 0;
-		var down = 0;
-        for(var i = 0; i < massRecords.length - 1; i++)
-        {
-        	var record1 = massRecords[i];
-        	var record2 = massRecords[i + 1];
-        	var k = (record2.mass - record1.mass) / (record2.time - record1.time);
-
-        	// 如果k的绝对值大于斜率门限，则对结果计分
-        	if(Math.abs(k) > massKLimit)
-        	{
-	        	if(k > 0)
-	        	{
-	        		up++;
-	        	}
-	        	else if(k < 0)
-	        	{
-	        		down++;
-	        	}
-        	}
-        }
-
-        var diff = up - down;
-        if(Math.abs(diff) < massUpDownDiff)
-        {
-        	return STATE_STABLE;
-        }
-
-
-        if(diff > 0)
-        {
-        	return STATE_IN;
-        }
-
-        return STATE_OUT;
-	}
-
-	function judgeState(massRecords)
-	{
-		var ks = 0;
-		var kcount = 0;
-		var kmax = 0;
-		var kmin = 0;
-        for(var i = 0; i < massRecords.length - 1; i++)
-        {
-        	var record1 = massRecords[i];
-        	var record2 = massRecords[i + 1];
-        	var k = (record2.mass - record1.mass) / (record2.time - record1.time);
-
-        	if(k > kmax)
-        	{
-        		kmax = k;
-        		continue;
-        	}
-
-        	if(k < kmin)
-        	{
-        		kmin = k;
-        		continue;
-        	}
-
-        	ks += k;
-        	kcount++;
-        }
-
-
-        var kavg = 0;
-        if(kcount > 0)
-        {
-        	kavg = ks / kcount;
-        }
-
-        if(Math.abs(kavg) < massKLimit)
-        {
-        	return STATE_STABLE;
-        }
-       
-        if(kavg > 0)
-        {
-        	return STATE_IN;
-        }
-
-        return STATE_OUT;
-	}
-*/
 
 	function judgeState(massRecords)
 	{

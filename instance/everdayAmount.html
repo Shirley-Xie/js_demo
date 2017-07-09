@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>统计每人每天数量</title>
+</head>
+<body>
+  <script type="text/javascript">
+
+  //按照日期分组后，按照人分组，根据相关ID连接
+  //id位userID
+  let workloads = [{id:1,  displayName:'小明', amount: 0.5, created_at:2017-07-01},
+								{id:2, displayName:'小花', amount: 0.5, created_at:2017-07-01},
+								{id:3, displayName:'小李', amount: 0.5, created_at:2017-07-01},
+								{id:1,  displayName:'小明', amount: 0.5, created_at:2017-07-01},
+								{id:2, displayName:'小花', amount: 0.5, created_at:2017-07-01},
+								{id:3, displayName:'小李', amount: 0.5, created_at:2017-07-02}
+							];
+
+	let users = [
+								{id:1, displayName:'小明', craated_at:'2017-07-01'}, 
+								{id:2, displayName:'小花', craated_at:'2017-07-01'},
+								{id:3, displayName:'小李', craated_at:'2017-07-01'} 
+							 ]				
+
+	document.write('数据为：workloads' + workloads)
+	document.write('数据为：users' + users)
+	 //  // 建立日历
+  // const holidayMap = {};
+  // holidays.forEach((holidayInfo) => {
+  // 	happend = holidayInfo.happend;
+  //   holidayMap[happend] = holidayInfo;
+  // });
+
+
+  //建立时间分组
+  const workloadMap = {};
+  workloads.forEach((workloadInfo) => {
+    const created_at = workloadInfo.created_at;
+    let arr = workloadMap[created_at];
+    if(!arr){
+      arr = [];
+      workloadMap[created_at] = arr;
+    }
+
+    //把相同时间的数据放一起
+    arr.push(workloadInfo);
+  });
+  document.write('分组后workloads' + '</pre>' + workloadMap + '</pre>')
+
+  // 从已有数据中查找那一天的情况
+  const dayStr = '2017-07-01'
+  let dayInfo = workloadMap[dayStr];
+
+  let persons = [];
+  //计算每人amount的总和
+  let userMap = {};
+  
+  persons = users.map(user => {
+    const person = {
+      displayName: user.displayName,
+      id: user.id,
+      created_at: user.created_at,
+      amount: 0
+    };
+
+    userMap[person.id] = person;
+    return person;
+  });
+  document.write('persons' + '</pre>' + persons + '</pre>')
+  document.write('userMap' + '</pre>' + userMap + '</pre>')
+
+  dayInfo.forEach(item => {
+    const displayName = item.displayName;
+    let person = userMap[item.id];
+    item.amount = parseFloat(item.amount);
+    person.amount += item.amount;
+  });
+  document.write('2017-07-01de userMap' + '</pre>' + userMap + '</pre>')
+
+  persons = persons.filter(person => {
+    // 正常填报不提示
+    if(person.amount == 1)
+    {
+      person.type = 'normal';
+      return false;
+    }
+
+    // 没填报告警
+    if(person.amount == 0)
+    {
+      person.type = 'alert';
+      return true;
+    }
+
+    // 已填报，但是不满足
+    person.type = 'warning';
+    return true;
+  });
+ 
+  </script>
+</body>
+</html>
